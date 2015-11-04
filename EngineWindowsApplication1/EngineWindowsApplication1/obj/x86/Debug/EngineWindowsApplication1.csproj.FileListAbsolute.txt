@@ -1,0 +1,9 @@
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\bin\Debug\EngineWindowsApplication1.exe
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\bin\Debug\EngineWindowsApplication1.pdb
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\obj\x86\Debug\EngineWindowsApplication1.csprojResolveAssemblyReference.cache
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\obj\x86\Debug\EngineWindowsApplication1.Form1.resources
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\obj\x86\Debug\EngineWindowsApplication1.Properties.Resources.resources
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\obj\x86\Debug\EngineWindowsApplication1.csproj.GenerateResource.Cache
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\obj\x86\Debug\EngineWindowsApplication1.exe
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\obj\x86\Debug\EngineWindowsApplication1.pdb
+D:\Projects\2015.10.26_气象局clip\EngineWindowsApplication1\EngineWindowsApplication1\obj\x86\Debug\EngineWindowsApplication1.pageForm.resources
