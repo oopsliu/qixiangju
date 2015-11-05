@@ -46,6 +46,7 @@ namespace EngineWindowsApplication1
             }
         }
 
+        //读取原始数据并添加到grouplayer列表中
         public void LoadOriginData(string path, int groupNumber)
         {
             IWorkspaceFactory shpFactory = new ShapefileWorkspaceFactoryClass();
@@ -72,14 +73,39 @@ namespace EngineWindowsApplication1
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Clear();
-
             groupNumber = listBox1.SelectedIndex + 1;
             int extentStatus = findExtentStatus(groupNumber);
             comboBox1.SelectedIndex = extentStatus;
 
+            //检查grouplayer列表中是否已经存在当前请求的图层
             bool exist = CheckAvailability(groupNumber, extentStatus);
             string findName = "grp" + groupNumber.ToString() + "ext" + extentStatus.ToString();
+
+            //如果已经存在，直接加载
+            if (exist == true)
+            {
+                Clear();
+                IGroupLayer viewGrpLys = avlbLayers.Find(item => item.Name == findName);
+                mapControl.AddLayer(viewGrpLys);
+            }
+            //如果不存在，先进行裁切并添加到grouplayer列表中，再加载
+            else
+            {
+                Clear();
+                ClipByExtent(groupNumber, extentStatus);
+                IGroupLayer newGrpLys = avlbLayers.Find(item => item.Name == findName);
+                mapControl.AddLayer(newGrpLys);
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int currentExtent = comboBox1.SelectedIndex;
+            UpdateExtentStatus(listBox1.SelectedIndex + 1, currentExtent);
+
+            bool exist = CheckAvailability(listBox1.SelectedIndex + 1, currentExtent);
+
+            string findName = "grp" + groupNumber.ToString() + "ext" + currentExtent.ToString();
 
             if (exist == true)
             {
@@ -90,13 +116,58 @@ namespace EngineWindowsApplication1
             else
             {
                 Clear();
-                ClipByExtent(groupNumber, extentStatus);
+                ClipByExtent(groupNumber, currentExtent);
                 IGroupLayer newGrpLys = avlbLayers.Find(item => item.Name == findName);
                 mapControl.AddLayer(newGrpLys);
             }
-
         }
 
+        //检查grouplayer中是否有可用图层
+        public bool CheckAvailability(int groupNm, int extNm)
+        {
+            bool exist = false;
+            string checkName = "grp" + groupNm.ToString() + "ext" + extNm.ToString();
+
+            foreach (var listItem in avlbLayers)
+            {
+                if (listItem.Name == checkName)
+                {
+                    exist = true;
+                    break;
+                }
+
+                else
+                    exist = false;
+            }
+            return exist;
+        }
+
+        //根据组号查找裁切范围信息
+        public int findExtentStatus(int groupNm)
+        {
+            int theExtStatus = -1;
+            if (groupNumber == 1)
+                theExtStatus = extentStatus1;
+            else if (groupNumber == 2)
+                theExtStatus = extentStatus2;
+            else if (groupNumber == 3)
+                theExtStatus = extentStatus3;
+            return theExtStatus;
+        }
+
+        //根据选择情况更新裁切范围信息
+        public void UpdateExtentStatus(int groupNm, int extNm)
+        {
+            if (groupNm == 1)
+                extentStatus1 = extNm;
+            else if (groupNm == 2)
+                extentStatus2 = extNm;
+            else if (groupNm == 3)
+                extentStatus3 = extNm;
+        }
+
+        #region 裁切
+        //通过intersect关系进行裁切
         public void ClipByExtent(int groupNm, int extNum)
         {
             IGeometry extent = GetClipExtent(extNum);
@@ -156,9 +227,6 @@ namespace EngineWindowsApplication1
             }
             avlbLayers.Add(newGroupLayer);
         }
-
-
-
         public IGeometry GetClipExtent(int extNm)
         {
             IWorkspaceFactory bouFactory = new FileGDBWorkspaceFactoryClass();
@@ -253,71 +321,7 @@ namespace EngineWindowsApplication1
             }
         }
 
-        public int findExtentStatus(int groupNm)
-        {
-            int theExtStatus = -1;
-            if (groupNumber == 1)
-                theExtStatus = extentStatus1;
-            else if (groupNumber == 2)
-                theExtStatus = extentStatus2;
-            else if (groupNumber == 3)
-                theExtStatus = extentStatus3;
-            return theExtStatus;
-        }
-            
-        public bool CheckAvailability(int groupNm, int extNm)
-        {
-            bool exist = false;
-            string checkName = "grp" + groupNm.ToString() + "ext" + extNm.ToString();
-
-            foreach (var listItem in avlbLayers)
-            {
-                if (listItem.Name == checkName)
-                {
-                    exist = true;
-                    break;
-                }
-
-                else
-                    exist = false;
-            }
-            return exist;
-        }
-
-        public void UpdateExtentStatus(int groupNm, int extNm)
-        {
-            if (groupNm == 1)
-                extentStatus1 = extNm;
-            else if (groupNm == 2)
-                extentStatus2 = extNm;
-            else if (groupNm == 3)
-                extentStatus3 = extNm;
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Clear();
-            int currentExtent = comboBox1.SelectedIndex;
-            UpdateExtentStatus(listBox1.SelectedIndex + 1, currentExtent);
-            
-            bool exist = CheckAvailability(listBox1.SelectedIndex + 1, currentExtent);
-
-            string findName = "grp" + groupNumber.ToString() + "ext" + currentExtent.ToString();
-
-            if (exist == true)
-            {
-                Clear();
-                IGroupLayer viewGrpLys = avlbLayers.Find(item => item.Name == findName);
-                mapControl.AddLayer(viewGrpLys);
-            }
-            else
-            {
-                Clear();
-                ClipByExtent(groupNumber, currentExtent);
-                IGroupLayer newGrpLys = avlbLayers.Find(item => item.Name == findName);
-                mapControl.AddLayer(newGrpLys);
-            }
-        }
+        #endregion 裁切
 
         public void Clear()
         {
