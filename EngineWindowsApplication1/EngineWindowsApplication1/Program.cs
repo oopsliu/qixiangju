@@ -8,7 +8,6 @@ namespace EngineWindowsApplication1
 {
     static class Program
     {
-        private static LicenseInitializer m_AOLicenseInitializer = new EngineWindowsApplication1.LicenseInitializer();
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

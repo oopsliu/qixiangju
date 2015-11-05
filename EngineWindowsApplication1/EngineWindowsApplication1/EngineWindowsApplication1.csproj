@@ -141,10 +141,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LicenseInitializer.cs" />
-    <Compile Include="LicenseInitializer.Designer.cs">
-      <DependentUpon>LicenseInitializer.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
